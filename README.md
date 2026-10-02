@@ -76,6 +76,6 @@ services:
 
 [GitHub Actions 多架构构建](https://docs.docker.com/build/ci/github-actions/multi-platform/)配置在 `.github/workflows/docker.yml`：PR 只测试，`main` 推送、版本标签 `v*` 或手动触发在测试通过后构建 `linux/amd64` 和 `linux/arm64`。主分支发布 `latest` 与提交标签；版本标签发布对应版本号。
 
-维护者自行在 GitHub 仓库 Settings → Secrets and variables → Actions 添加 `DOCKERHUB_USERNAME` 与 `DOCKERHUB_TOKEN`，并确保 Docker Hub 的 `yorenzzz/ieltsbuddy` 仓库为公开。不要把 Docker Hub Token 写进源码、README 或 Compose。首次公开推送前必须完成脱敏确认；镜像是否已发布以 Actions 成功结果及 Docker Hub 实際标签为准。
+维护者自行在 GitHub 仓库 Settings → Secrets and variables → Actions 添加 `DOCKERHUB_USERNAME` 与 `DOCKERHUB_TOKEN`。本仓库也兼容将 Token 保存为 `YORENZZZ`，未设置用户名时默认使用 `yorenzzz`。请确保 Docker Hub 的 `yorenzzz/ieltsbuddy` 仓库为公开。不要把 Docker Hub Token 写进源码、README 或 Compose。首次公开推送前必须完成脱敏确认；镜像是否已发布以 Actions 成功结果及 Docker Hub 实际标签为准。
 
 旧的 `configure.py` 仅保留给已有 NAS 终端部署使用，需宿主机 Python 3；镜像不含 Python。新安装请直接在网页初始化，网页保存的 AI 参数优先于环境变量。
