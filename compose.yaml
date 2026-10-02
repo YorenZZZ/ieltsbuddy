@@ -1,0 +1,32 @@
+services:
+  ieltsbuddy:
+    build: .
+    image: ieltsbuddy:local
+    container_name: ieltsbuddy
+    restart: unless-stopped
+    ports:
+      - "18895:18895"
+    environment:
+      HOST: 0.0.0.0
+      PORT: "18895"
+      DATA_DIR: /data
+      # 可选：旧部署 .env 的私有配置；留空也可在网页填写。
+      HOLYSHEEP_BASE_URL: ${HOLYSHEEP_BASE_URL:-https://api.openai.com/v1}
+      HOLYSHEEP_API_KEY: ${HOLYSHEEP_API_KEY:-}
+      HOLYSHEEP_MODEL: ${HOLYSHEEP_MODEL:-}
+      GROQ_BASE_URL: ${GROQ_BASE_URL:-https://api.groq.com/openai/v1}
+      GROQ_API_KEY: ${GROQ_API_KEY:-}
+      GROQ_STT_MODEL: ${GROQ_STT_MODEL:-whisper-large-v3}
+      IELTSBUDDY_USERNAME: ${IELTSBUDDY_USERNAME:-}
+      IELTSBUDDY_PASSWORD_HASH: ${IELTSBUDDY_PASSWORD_HASH:-}
+      IELTSBUDDY_SESSION_SECRET: ${IELTSBUDDY_SESSION_SECRET:-}
+      IELTS_LIBRARY_DIR: /library
+      NODE_USE_ENV_PROXY: "1"
+      # 若服务商需要代理，填写容器能访问的代理地址；127.0.0.1 指容器自身。
+      # HTTPS_PROXY: http://proxy-host:7890
+      # HTTP_PROXY: http://proxy-host:7890
+      NO_PROXY: localhost,127.0.0.1,::1
+    volumes:
+      - ./data:/data
+      # 将 ./library 换为 NAS 上已有的资料目录；不要挂载 Mac 路径。
+      - ./library:/library:ro

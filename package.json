@@ -1,0 +1,21 @@
+{
+  "name": "ieltsbuddy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "AI 雅思一对一老师（NAS Docker 自托管）",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "check:public": "node scripts/check-public-files.mjs"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YorenZZZ/ieltsbuddy.git"
+  }
+}

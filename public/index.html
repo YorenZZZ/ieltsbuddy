@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f4fb" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141318" media="(prefers-color-scheme: dark)">
+  <title>IeltsBuddy</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#/"><img src="/icon.svg" alt=""><span>IeltsBuddy</span></a>
+      <button id="account-btn" class="btn ghost small" type="button">登录</button>
+      <button class="new-chat" id="new-chat" type="button">＋ 新对话</button>
+      <nav class="nav">
+        <a href="#/" data-nav="home"><span class="nav-icon" aria-hidden="true">🧩</span><span>技能工具箱</span></a>
+        <a href="#/plan" data-nav="plan"><span class="nav-icon" aria-hidden="true">🗓️</span><span>学习计划</span></a>
+        <a href="#/history" data-nav="history"><span class="nav-icon" aria-hidden="true">📍</span><span>我的足迹</span></a>
+        <a href="#/settings" data-nav="settings"><span class="nav-icon" aria-hidden="true">⚙️</span><span>设置</span></a>
+      </nav>
+      <section class="conversation-history" aria-labelledby="history-heading">
+        <div class="history-heading"><h2 class="conv-title" id="history-heading">历史对话</h2><button id="clear-conversations" type="button" class="icon-btn" hidden>清除全部</button></div>
+        <div class="conversations scroll" id="conversations"></div>
+      </section>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+    <main class="workspace">
+      <header class="topbar">
+        <button class="icon-btn" id="menu-btn" type="button" aria-label="菜单">☰</button>
+        <a class="brand small" href="#/">IeltsBuddy</a>
+        <button class="icon-btn" id="chat-btn" type="button" aria-label="老师">💬</button>
+      </header>
+      <div class="view scroll" id="view"></div>
+    </main>
+    <section class="chat" id="chat">
+      <header class="chat-head">
+        <strong id="chat-title">雅思老师</strong>
+        <button class="icon-btn" id="chat-close" type="button" aria-label="关闭">✕</button>
+      </header>
+      <div class="chat-log scroll" id="chat-log"></div>
+      <div class="chips">
+        <button type="button" data-ask="下一步怎么用？结合我的计划和最近练习告诉我现在最该做什么。">下一步怎么用</button>
+        <button type="button" data-ask="根据我当前看到的内容，帮我安排一个承接练习，直接给出题目。">开始承接练习</button>
+        <button type="button" data-ask="请解释我当前看到的结果：哪里丢分、为什么、怎么改。">解释当前结果</button>
+      </div>
+      <form class="composer" id="composer">
+        <textarea id="composer-input" rows="1" placeholder="有问题，随便问" autocomplete="off"></textarea>
+        <button type="submit" class="send" aria-label="发送">➤</button>
+      </form>
+    </section>
+  </div>
+  <div id="ai-warning" class="ai-warning" role="alert" hidden><span>主AI尚未测试通过</span><a href="#/settings?section=llm">去配置主AI →</a></div>
+  <div id="mic-warning" class="ai-warning" role="alert" hidden><span>麦克风被禁用，请先在浏览器的网站权限或系统设置中允许使用麦克风，然后重试。</span></div>
+  <div class="gate" id="gate" hidden>
+    <form class="gate-card" id="login-form">
+      <button class="icon-btn gate-close" type="button" id="gate-close" aria-label="关闭登录">✕</button>
+      <img src="/icon.svg" alt="">
+      <h1>IeltsBuddy</h1>
+      <p class="muted" id="gate-note">登录后继续练习</p>
+      <div class="gate-fields" id="gate-fields">
+        <label>用户名<input name="username" autocomplete="username" autocapitalize="off" spellcheck="false" required></label>
+        <label>密码<input name="password" type="password" autocomplete="current-password" required></label>
+        <label id="confirm-field" hidden>确认密码<input name="passwordConfirm" type="password" autocomplete="new-password"></label>
+        <button class="btn" id="gate-submit" type="submit">登录</button>
+      </div>
+    </form>
+  </div>
+  <dialog id="logout-confirm" class="logout-confirm" aria-labelledby="logout-confirm-title">
+    <form method="dialog">
+      <button class="confirm-close" value="cancel" aria-label="取消退出登录"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <h2 id="logout-confirm-title">退出登录？</h2>
+      <p class="muted">退出后需要重新登录才能继续练习。</p>
+      <div class="confirm-actions"><button class="btn ghost" value="cancel">取消</button><button class="btn confirm-logout" value="logout">确认退出</button></div>
+    </form>
+  </dialog>
+  <dialog id="action-confirm" class="logout-confirm" aria-labelledby="action-confirm-title">
+    <form method="dialog">
+      <button class="confirm-close" value="cancel" aria-label="关闭确认弹窗">✕</button>
+      <h2 id="action-confirm-title"></h2><p class="muted"></p>
+      <div class="confirm-actions"><button class="btn ghost" value="cancel">取消</button><button class="btn confirm-logout" value="confirm">确认删除</button></div>
+    </form>
+  </dialog>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

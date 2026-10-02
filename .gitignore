@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+data/
+library/
+node_modules/
+待删除/
+HANDOFF*.md
+compose.nas*.yaml
+secrets/
+*.sqlite*
+*.db
+*.log
+__pycache__/
+.DS_Store
+
+._*

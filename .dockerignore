@@ -1,0 +1,12 @@
+*
+!Dockerfile
+!LICENSE
+!package.json
+!server.mjs
+!src/
+!src/**
+!public/
+!public/**
+
+**/._*
+**/.DS_Store
