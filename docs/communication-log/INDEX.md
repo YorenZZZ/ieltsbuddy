@@ -6,3 +6,4 @@
 | 2026-10-03 03:52 | Docker 发布凭据名称兼容 | `fix: support configured Docker Hub secret name` | 兼容维护者已保存的 Token Secret 名称，云端镜像发布以实际结果为准 |
 
 | 2026-10-12 | [留迹独立镜像发布](entries/2026-10-12-liuji-image.md) | 本纪要所在提交 | 仅新增独立发布工作流 |
+| 2026-10-12 | [留迹首发镜像固定源码](entries/2026-10-12-liuji-final-image.md) | 本纪要所在提交 | 使用通过清洁安装验证的最终源码 |

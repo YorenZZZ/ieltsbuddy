@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: YorenZZZ/liuji
-          ref: a7b78f2f362a13e0948cc53256e0cb2a51ff2ab9
+          ref: 17e9b49af53daa268263f5b117e1c559cefca18c
           persist-credentials: false
       - uses: actions/setup-node@v7
         with:
@@ -37,10 +37,10 @@ jobs:
             yorenzzz/liuji:latest
             yorenzzz/liuji:${{ steps.version.outputs.version }}
           labels: |
-            org.opencontainers.image.title=Liuji
+            org.opencontainers.image.title=留迹
             org.opencontainers.image.description=Docker自部署时间轴笔记工具，可快速导出为截图。
             org.opencontainers.image.source=https://github.com/YorenZZZ/liuji
-            org.opencontainers.image.revision=a7b78f2f362a13e0948cc53256e0cb2a51ff2ab9
+            org.opencontainers.image.revision=17e9b49af53daa268263f5b117e1c559cefca18c
             org.opencontainers.image.version=${{ steps.version.outputs.version }}
             org.opencontainers.image.licenses=MIT
           cache-from: type=gha
