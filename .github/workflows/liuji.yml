@@ -45,18 +45,13 @@ jobs:
             org.opencontainers.image.licenses=MIT
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: Update Docker Hub description
-        env:
-          HUB_TOKEN: ${{ secrets.YORENZZZ }}
+      - name: Verify public Docker Hub description
         run: |
           python3 - <<'PYTHON'
-          import json, os, pathlib, urllib.request
-          def request(url, payload, token=None):
-              headers = {'Content-Type':'application/json'}
-              if token: headers['Authorization'] = 'Bearer ' + token
-              req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers=headers, method='PATCH' if token else 'POST')
-              with urllib.request.urlopen(req, timeout=30) as r: return json.load(r)
-          auth = request('https://hub.docker.com/v2/users/login/', {'username':'yorenzzz','password':os.environ['HUB_TOKEN']})
-          request('https://hub.docker.com/v2/repositories/yorenzzz/liuji/', {'description':'Docker自部署时间轴笔记工具，可快速导出为截图。','full_description':pathlib.Path('README.md').read_text()}, auth['token'])
-          print('Docker Hub description updated.')
+          import json, urllib.request
+          with urllib.request.urlopen('https://hub.docker.com/v2/repositories/yorenzzz/liuji/', timeout=30) as r:
+              repository = json.load(r)
+          assert repository['description'] == 'Docker自部署时间轴笔记工具，可快速导出为截图。'
+          assert 'docs/images/timeline.jpg' in repository['full_description']
+          print('Public description and screenshot verified. README updates use Docker Hub account settings.')
           PYTHON
