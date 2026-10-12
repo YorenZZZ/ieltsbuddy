@@ -1,0 +1,62 @@
+name: Publish Liuji with existing Docker credential
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/liuji-publish]
+    paths: [.github/workflows/liuji.yml]
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          repository: YorenZZZ/liuji
+          ref: a7b78f2f362a13e0948cc53256e0cb2a51ff2ab9
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: npm ci && npm run check && npm run check:privacy && npm test && npm run build
+      - id: version
+        run: node -p '"version=" + require("./package.json").version' >> "$GITHUB_OUTPUT"
+      - uses: docker/setup-qemu-action@v4
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          username: yorenzzz
+          password: ${{ secrets.YORENZZZ }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            yorenzzz/liuji:latest
+            yorenzzz/liuji:${{ steps.version.outputs.version }}
+          labels: |
+            org.opencontainers.image.title=Liuji
+            org.opencontainers.image.description=Docker自部署时间轴笔记工具，可快速导出为截图。
+            org.opencontainers.image.source=https://github.com/YorenZZZ/liuji
+            org.opencontainers.image.revision=a7b78f2f362a13e0948cc53256e0cb2a51ff2ab9
+            org.opencontainers.image.version=${{ steps.version.outputs.version }}
+            org.opencontainers.image.licenses=MIT
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Update Docker Hub description
+        env:
+          HUB_TOKEN: ${{ secrets.YORENZZZ }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os, pathlib, urllib.request
+          def request(url, payload, token=None):
+              headers = {'Content-Type':'application/json'}
+              if token: headers['Authorization'] = 'Bearer ' + token
+              req = urllib.request.Request(url, data=json.dumps(payload).encode(), headers=headers, method='PATCH' if token else 'POST')
+              with urllib.request.urlopen(req, timeout=30) as r: return json.load(r)
+          auth = request('https://hub.docker.com/v2/users/login/', {'username':'yorenzzz','password':os.environ['HUB_TOKEN']})
+          request('https://hub.docker.com/v2/repositories/yorenzzz/liuji/', {'description':'Docker自部署时间轴笔记工具，可快速导出为截图。','full_description':pathlib.Path('README.md').read_text()}, auth['token'])
+          print('Docker Hub description updated.')
+          PYTHON
